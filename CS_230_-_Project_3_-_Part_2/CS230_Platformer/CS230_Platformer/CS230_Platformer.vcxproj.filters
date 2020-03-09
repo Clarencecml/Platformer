@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="Source\Collision.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameState_Platform.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameStateMgr.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\main.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Random.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameState_Menu.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Include\Collision.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\GameState_Platform.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\GameStateList.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\GameStateMgr.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\main.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Random.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\GameState_Menu.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header">
+      <UniqueIdentifier>{d94c98d2-7d95-4eba-8b80-7a6e4c836303}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source">
+      <UniqueIdentifier>{cdc33a33-26d9-463e-8fa6-dde93e7fc8d9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
