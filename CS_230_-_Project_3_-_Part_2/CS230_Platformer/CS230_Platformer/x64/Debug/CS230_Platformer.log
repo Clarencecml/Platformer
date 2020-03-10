@@ -1,0 +1,3 @@
+﻿  GameState_Platform.cpp
+C:\Users\User\Downloads\Platformer-master\Platformer-master\CS_230_-_Project_3_-_Part_2\CS230_Platformer\CS230_Platformer\Source\GameState_Platform.cpp(548,7): warning C4189: 'rand_dir1': local variable is initialized but not referenced
+  CS230_Platformer.vcxproj -> C:\Users\User\Downloads\Platformer-master\Platformer-master\CS_230_-_Project_3_-_Part_2\CS230_Platformer\x64\Debug\CS230_PlatformerD.exe

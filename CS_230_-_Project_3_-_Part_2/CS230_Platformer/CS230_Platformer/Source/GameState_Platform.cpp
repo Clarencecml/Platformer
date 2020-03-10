@@ -13,8 +13,8 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 /******************************************************************************/
 
 #include "main.h"
-#include "iostream"
-#include <string>
+#include <iostream>
+
 /******************************************************************************/
 /*!
 	Defines
@@ -30,7 +30,7 @@ const float			MOVE_VELOCITY_HERO		= 4.0f;
 const float			MOVE_VELOCITY_ENEMY		= 7.5f;
 const double		ENEMY_IDLE_TIME			= 2.0;
 const int			HERO_LIVES				= 3;
-const float			BOUNDING_RECT_SIZE		= 0.5f;			// default rectangle size
+const float			BOUNDING_RECT_SIZE		= 0.49f;			// default rectangle size
 
 //Flags
 const unsigned int	FLAG_ACTIVE				= 0x00000001;
@@ -108,6 +108,7 @@ struct GameObjInst
 
 	//General purpose counter (This variable will be used for the enemy state machine)
 	double			counter;
+
 };
 
 
@@ -168,6 +169,9 @@ static GameObjInst*		pParticle;
 
 // Font to be used for printing
 static u32				arial_Font;
+
+// String buffer to print variables
+char					My_String[100];
 
 
 /******************************************************************************/
@@ -297,9 +301,9 @@ void GameStatePlatformLoad(void)
 		-0.5f, 0.5f, 0xFF23ACAD, 0.0f, 0.0f);
 
 	AEGfxTriAdd(
-		-0.5f, 0.5f, 0xFF000000, 0.0f, 0.0f,
-		0.5f, -0.5f, 0xFF000000, 0.0f, 0.0f,
-		0.5f, 0.5f, 0xFF000000, 0.0f, 0.0f);
+		-0.5f, 0.5f, 0xFF23ACAD, 0.0f, 0.0f,
+		0.5f, -0.5f, 0xFF23ACAD, 0.0f, 0.0f,
+		0.5f, 0.5f, 0xFF23ACAD, 0.0f, 0.0f);
 
 	pObj->pMesh = AEGfxMeshEnd();
 	AE_ASSERT_MESG(pObj->pMesh, "fail to create object!!");
@@ -530,13 +534,26 @@ void GameStatePlatformUpdate(void)
 	if(TotalParticles < 400)
 	{
 		// Particle
-		AEVec2 x{ (f32)Random_Range(-5,5),(f32)Random_Range(-5,5) };
-		float dir = (float)Random_Range(-1, 1);
+		AEVec2 rand_vel{ -50.f * AERandFloat() + 50.f * AERandFloat(), -50.f * AERandFloat() + 50.f * AERandFloat() };
+		if (rand_vel.x > 10.0f)
+		{
+			rand_vel.x /= 10.0f;
+		}
+		if (rand_vel.y > 10.0f)
+		{
+			rand_vel.y /= 10.0f;
+		}
+
+		f32 rand_dir = -AERandFloat() + AERandFloat();
+		f32 rand_dir1 = -AERandFloat()/2.f + AERandFloat()/2.f;
+		
+		
 		// Two instance, one loop
-		pParticle = gameObjInstCreate((unsigned int)TYPE_OBJECT::TYPE_OBJECT_PARTICLE, 0.08f, &pHero->posCurr, &x, dir, STATE::STATE_NONE);
+		pParticle = gameObjInstCreate((unsigned int)TYPE_OBJECT::TYPE_OBJECT_PARTICLE, 0.08f, &pHero->posCurr, &rand_vel, rand_dir, STATE::STATE_NONE);
 		++TotalParticles;
-		pParticle = gameObjInstCreate((unsigned int)TYPE_OBJECT::TYPE_OBJECT_PARTICLE, 0.08f, &pHero->posCurr, &x, dir, STATE::STATE_NONE);
-		++TotalParticles;
+		pParticle->counter = 0.5;
+		//pParticle = gameObjInstCreate((unsigned int)TYPE_OBJECT::TYPE_OBJECT_PARTICLE, 0.08f, &pHero->posCurr, &rand_vel, rand_dir1, STATE::STATE_NONE);
+		//++TotalParticles;
 	}
 
 
@@ -568,8 +585,11 @@ void GameStatePlatformUpdate(void)
 		if (pInst->pObject->type == (unsigned int)TYPE_OBJECT::TYPE_OBJECT_PARTICLE)
 		{
 			f32 random = (f32)Random_Range(1, 3);
+
+			pInst->counter -= (double)g_dt;
 			if (pInst->posCurr.x > pHero->posCurr.x + random || pInst->posCurr.y > pHero->posCurr.y + random ||
-				pInst->posCurr.x < pHero->posCurr.x - random || pInst->posCurr.y < pHero->posCurr.y - random)
+				pInst->posCurr.x < pHero->posCurr.x - random || pInst->posCurr.y < pHero->posCurr.y - random ||
+				pInst->counter <= 0)
 			{
 				gameObjInstDestroy(pInst);
 				--TotalParticles;
@@ -826,8 +846,9 @@ void GameStatePlatformDraw(void)
 		AEGfxMeshDraw(pInst->pObject->pMesh, AE_GFX_MDM_TRIANGLES);
 	}
 	
-	AEGfxPrint(arial_Font, "Coins Left: ", (s32)(AEGfxGetWinMinX() + 10.f), (s32)(AEGfxGetWinMinY() + 575), 1, 0, 1);
-	AEGfxPrint(arial_Font, "Lives: ", (s32)(AEGfxGetWinMinX() + 400.f), (s32)(AEGfxGetWinMinY() + 575), 1, 0, 1);
+
+	sprintf_s(My_String, "Coins Left: %d				Lives Left: %d", TotalCoins, HeroLives);
+	AEGfxPrint(arial_Font, My_String, (s32)(AEGfxGetWinMinX() + 10.f), (s32)(AEGfxGetWinMinY() + 575), 1, 0, 1);
 }
 
 void GameStatePlatformDraw_1(void)
